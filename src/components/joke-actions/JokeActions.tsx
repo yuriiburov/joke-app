@@ -1,10 +1,11 @@
 import Button from '../UI/Button/Button';
+import NextButton from '../UI/NextButton/NextButton';
 import classes from './JokeActions.module.scss';
 
 const JokeActions = () => {
   return (
     <div className={classes['joke-actions']}>
-      <Button className={classes['joke-actions__next-btn']}>Next</Button>
+      <NextButton />
       {/* <Button>test</Button> */}
     </div>
   );
