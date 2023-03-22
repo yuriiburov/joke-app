@@ -1,0 +1,11 @@
+.joke-section {
+  @apply flex w-1/2 flex-col gap-2;
+
+  &__main {
+    @apply w-full flex gap-2;
+  }
+
+  &__text-field {
+    @apply border border-primary-dark rounded py-4 px-6 w-full;
+  }
+}

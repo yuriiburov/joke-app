@@ -1,0 +1,7 @@
+.layout {
+  @apply flex h-screen relative max-w-[100vw] overflow-x-hidden;
+
+  main {
+    @apply flex-grow bg-primary-white;
+  }
+}

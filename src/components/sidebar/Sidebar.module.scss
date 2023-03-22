@@ -1,0 +1,19 @@
+.sidebar {
+  @apply bg-primary-dark w-0 duration-300 ease-linear relative h-full;
+
+  &__content {
+    @apply absolute w-[20vw] left-[-20vw] duration-300 ease-linear;
+  }
+
+  &_open {
+    @apply w-1/5;
+
+    .sidebar__content {
+      @apply left-0;
+    }
+  }
+
+  &__visibility-btn {
+    @apply absolute top-2.5 right-[-75px];
+  }
+}
