@@ -26,7 +26,7 @@ const JokeSection = () => {
             </div>
             <AudioButton isMute={isMute} setIsMute={setIsMute} />
           </div>
-          <JokeActions />
+          <JokeActions jokeId={data.id} />
         </div>
       )}
       {isLoading && <div className={classes['joke-section']}>Loading</div>}
