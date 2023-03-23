@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const useTypingJoke = (joke: string) => {
   const [revealedLetters, setRevealedLetters] = useState<number>(0);
@@ -6,62 +6,22 @@ const useTypingJoke = (joke: string) => {
     () => setRevealedLetters((prev) => prev + 1),
     50
   );
+  console.log(revealedLetters, joke);
 
   useEffect(() => {
-    if (revealedLetters === joke.length) {
-      clearInterval(interval);
-    }
+    if (revealedLetters !== joke.length) return;
+    clearInterval(interval);
   }, [joke, interval, revealedLetters]);
 
   useEffect(() => {
     return () => clearInterval(interval);
   }, [interval]);
 
+  useEffect(() => {
+    setRevealedLetters(0);
+  }, [joke]);
+
   return joke.substring(0, revealedLetters);
 };
-
-// const useTypingJoke = (joke: string) => {
-//   const [text, setText] = useState<string>('');
-//   const intervalIdRef = useRef<number>();
-
-//   useEffect(() => {
-//     let textIndex = 0;
-
-//     const interval = setInterval(() => {
-//       if (textIndex === joke.length) {
-//         clearInterval(intervalIdRef.current);
-//         return;
-//       }
-//       setText((prevText) => prevText + joke.charAt(textIndex));
-//       textIndex += 1;
-//     }, 50);
-
-//     intervalIdRef.current = interval;
-
-//     return () => {
-//       clearInterval(intervalIdRef.current);
-//     };
-//   }, [joke]);
-
-//   return text;
-// };
-
-// const useTypingJoke = (joke: string) => {
-//   const [text, setText] = useState<string>('');
-
-//   let textIndex = 0;
-
-//   const typing = () => {
-//     console.log(textIndex);
-//     if (textIndex === joke.length) return;
-
-//     setText((prevText) => prevText + joke.charAt(textIndex - 1));
-//     textIndex += 1;
-//     setTimeout(typing, 50);
-//   };
-//   typing();
-
-//   return text;
-// };
 
 export default useTypingJoke;

@@ -1,0 +1,4 @@
+.next-btn {
+  @apply bg-primary-green rounded py-2 flex items-center h-10 border transition-opacity
+    hover:opacity-90;
+}

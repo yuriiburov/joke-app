@@ -14,6 +14,6 @@ export const speakJoke = (joke: string, isMute: boolean) => {
     utterance.voice = englishVoices[0];
   }
   if ((primaryVoice || englishVoices.length) && !isMute) {
-    // speechSynthesis.speak(utterance);
+    speechSynthesis.speak(utterance);
   }
 };

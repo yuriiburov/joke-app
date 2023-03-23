@@ -3,13 +3,18 @@ import { speakJoke } from '../functions/speakJoke';
 import { IJoke } from '../interfaces/joke.interface';
 import getJoke from '../services/getJoke';
 
-const useJoke = (isMute: boolean): UseQueryResult<IJoke, unknown> => {
+const useJoke = (
+  isMute: boolean,
+  setSetupIsReady: React.Dispatch<React.SetStateAction<boolean>>
+): UseQueryResult<IJoke, unknown> => {
   const query = useQuery({
     queryKey: ['joke'],
     queryFn: getJoke,
     refetchOnWindowFocus: false,
-    onSuccess: ({ setup, delivery }) =>
-      speakJoke(`${setup} ${delivery}`, isMute),
+    onSuccess: ({ setup, delivery }) => {
+      setSetupIsReady(false);
+      speakJoke(`${setup} ${delivery}`, isMute);
+    },
   });
 
   return query;

@@ -1,0 +1,11 @@
+.star-btn {
+  @apply p-0;
+
+  path {
+    @apply stroke-primary-yellow fill-none;
+  }
+
+  &_favorite path {
+    @apply fill-primary-yellow;
+  }
+}

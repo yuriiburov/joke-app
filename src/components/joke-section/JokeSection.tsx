@@ -1,20 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import AudioSvg from '../../assets/AudioSvg';
-import { speakJoke } from '../../functions/speakJoke';
 import useJoke from '../../hooks/useJoke';
-import getJoke from '../../services/getJoke';
 import JokeActions from '../joke-actions/JokeActions';
 import JokeText from '../joke-text/JokeText';
 import AudioButton from '../UI/AudioButton/AudioButton';
-import Button from '../UI/Button/Button';
 import classes from './JokeSection.module.scss';
 
 const JokeSection = () => {
   const [setupIsReady, setSetupIsReady] = useState<boolean>(false);
   const [isMute, setIsMute] = useState<boolean>(false);
 
-  const { data, isSuccess } = useJoke(isMute);
+  const { data, isSuccess, isLoading } = useJoke(isMute, setSetupIsReady);
+
+  useEffect(() => {
+    setSetupIsReady(false);
+  }, [data]);
 
   return (
     <>
@@ -27,9 +26,10 @@ const JokeSection = () => {
             </div>
             <AudioButton isMute={isMute} setIsMute={setIsMute} />
           </div>
-          <JokeActions />
+          <JokeActions jokeId={data.id} />
         </div>
       )}
+      {isLoading && <div className={classes['joke-section']}>Loading</div>}
     </>
   );
 };

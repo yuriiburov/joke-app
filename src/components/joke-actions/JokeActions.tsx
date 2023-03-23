@@ -1,11 +1,17 @@
-import Button from '../UI/Button/Button';
+import { FC } from 'react';
+import NextButton from '../UI/NextButton/NextButton';
+import StarButton from '../UI/StarButton/StarButton';
 import classes from './JokeActions.module.scss';
 
-const JokeActions = () => {
+interface Props {
+  jokeId: number;
+}
+
+const JokeActions: FC<Props> = ({ jokeId }) => {
   return (
     <div className={classes['joke-actions']}>
-      <Button className={classes['joke-actions__next-btn']}>Next</Button>
-      {/* <Button>test</Button> */}
+      <NextButton />
+      <StarButton jokeId={jokeId} />
     </div>
   );
 };
