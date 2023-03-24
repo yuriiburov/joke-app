@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { speakJoke } from '../../functions/speakJoke';
+import { speakJoke } from '../../functions/speakJoke/speakJoke';
 import JokeSection from '../joke-section/JokeSection';
 import classes from './Home.module.scss';
 

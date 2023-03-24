@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { speakJoke } from '../functions/speakJoke';
+import { speakJoke } from '../functions/speakJoke/speakJoke';
 import { IJoke } from '../interfaces/joke.interface';
 import getJoke from '../services/getJoke';
 
