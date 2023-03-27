@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useJoke from '../../hooks/useJoke';
 import JokeActions from '../joke-actions/JokeActions';
 import JokeText from '../joke-text/JokeText';
@@ -6,14 +6,8 @@ import AudioButton from '../UI/AudioButton/AudioButton';
 import classes from './JokeSection.module.scss';
 
 const JokeSection = () => {
-  const [setupIsReady, setSetupIsReady] = useState<boolean>(false);
   const [isMute, setIsMute] = useState<boolean>(false);
-
-  const { data, isSuccess, isLoading } = useJoke(isMute, setSetupIsReady);
-
-  useEffect(() => {
-    setSetupIsReady(false);
-  }, [data]);
+  const { data, isSuccess, isLoading } = useJoke(isMute);
 
   return (
     <>
@@ -21,8 +15,7 @@ const JokeSection = () => {
         <div className={classes['joke-section']}>
           <div className={classes['joke-section__main']}>
             <div className={classes['joke-section__text-field']}>
-              <JokeText text={data.setup} setSetupIsReady={setSetupIsReady} />
-              {setupIsReady && <JokeText text={data.delivery} />}
+              <JokeText text={`${data.setup}\n${data.delivery}`} />
             </div>
             <AudioButton isMute={isMute} setIsMute={setIsMute} />
           </div>

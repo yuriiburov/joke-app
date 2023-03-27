@@ -1,11 +1,8 @@
 import { FC } from 'react';
 import NextButton from '../UI/NextButton/NextButton';
 import StarButton from '../UI/StarButton/StarButton';
+import Props from './JokeActions.interface';
 import classes from './JokeActions.module.scss';
-
-interface Props {
-  jokeId: number;
-}
 
 const JokeActions: FC<Props> = ({ jokeId }) => {
   return (

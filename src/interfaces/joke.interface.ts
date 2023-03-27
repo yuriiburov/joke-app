@@ -1,3 +1,5 @@
+import IJokeFlags from './jokeFlags.interface';
+
 type jokeCategoryType =
   | 'Programming'
   | 'Misc'
@@ -9,15 +11,6 @@ type jokeCategoryType =
 type jokeType = 'twopart' | 'single';
 
 type jokeLangType = 'en' | 'de' | 'cs' | 'es' | 'fr' | 'pt';
-
-interface IJokeFlags {
-  explicit: boolean;
-  nsfw: boolean;
-  political: boolean;
-  racist: boolean;
-  religious: boolean;
-  sexist: boolean;
-}
 
 export interface IJoke {
   category: jokeCategoryType;

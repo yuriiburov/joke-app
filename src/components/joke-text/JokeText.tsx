@@ -1,20 +1,12 @@
-import { FC, memo, useEffect } from 'react';
+import { FC, memo } from 'react';
 import useTypingJoke from '../../hooks/useTypingJoke';
+import Props from './JokeText.interface';
+import classes from './JokeText.module.scss';
 
-interface Props {
-  text: string;
-  setSetupIsReady?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const JokeText: FC<Props> = ({ text, setSetupIsReady }) => {
+const JokeText: FC<Props> = ({ text }) => {
   const jokeText = useTypingJoke(text);
 
-  useEffect(() => {
-    if (jokeText.length !== text.length) return;
-    setSetupIsReady && setSetupIsReady(true);
-  }, [jokeText]);
-
-  return <div>{jokeText}</div>;
+  return <pre className={classes['joke-text']}>{jokeText}</pre>;
 };
 
 export default memo(JokeText);
