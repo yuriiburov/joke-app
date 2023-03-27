@@ -1,101 +1,83 @@
 import { speakJoke } from './speakJoke';
 
-describe('speakJoke', () => {
-  const mockJoke: string = 'Test joke';
-
-  let spySpeechSynthesisSpeak: jest.SpyInstance<
-    void,
-    [utterance: SpeechSynthesisUtterance],
-    any
-  >;
+describe('speakJoke()', () => {
+  let spySpeechSynthesisSpeak: jest.SpyInstance;
+  global.SpeechSynthesisUtterance = jest.fn();
 
   beforeEach(() => {
-    spySpeechSynthesisSpeak = jest.spyOn(speechSynthesis, 'speak');
+    Object.defineProperty(window, 'speechSynthesis', {
+      value: {
+        getVoices: jest.fn(),
+        speak: jest.fn(),
+      },
+      writable: true,
+    });
+
+    spySpeechSynthesisSpeak = jest.spyOn(window.speechSynthesis, 'speak');
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('should not speak if isMute true', () => {
-    speakJoke(mockJoke, true);
+  it('should not speak if isMute is true', () => {
+    speakJoke('test', true);
     expect(spySpeechSynthesisSpeak).not.toBeCalled();
   });
 
-  it('should speak if list of voices includes en-US lang', () => {
+  it('should not speak if no suitable voice is found', () => {
+    window.speechSynthesis.getVoices = jest.fn(() => []);
+    speakJoke('test', false);
+    expect(spySpeechSynthesisSpeak).not.toBeCalled();
+  });
+
+  it('should speak using primary voice if available', () => {
     const mockVoices = [
       {
+        voiceURI: 'com.apple.speech.synthesis.voice.Fred',
         lang: 'en-US',
-        voiceURI: 'com.apple.speech.synthesis.voice.Monica',
-        default: false,
-        localService: false,
-        name: 'Monica',
+        default: true,
+        localService: true,
+        name: 'Fred',
       },
       {
-        lang: 'en-CA',
         voiceURI: 'com.apple.speech.synthesis.voice.Samantha',
-        default: false,
-        localService: false,
+        lang: 'en-US',
+        default: true,
+        localService: true,
         name: 'Samantha',
       },
     ];
     window.speechSynthesis.getVoices = jest.fn(() => mockVoices);
-    speakJoke(mockJoke, false);
-    expect(spySpeechSynthesisSpeak).toBeCalled();
+    speakJoke('test', false);
+    expect(spySpeechSynthesisSpeak).toBeCalledWith(expect.anything());
+    expect(spySpeechSynthesisSpeak.mock.calls[0][0].voice?.voiceURI).toEqual(
+      'com.apple.speech.synthesis.voice.Fred'
+    );
   });
 
-  it('should not speak if list of voices is empty', () => {
-    window.speechSynthesis.getVoices = jest.fn(() => []);
-    speakJoke(mockJoke, false);
-    expect(spySpeechSynthesisSpeak).not.toBeCalled();
-  });
-
-  it('should not speak if list of voices without en-US voices', () => {
+  it('should speak using the first available English voice if primary voice is not available', () => {
     const mockVoices = [
       {
-        lang: 'fr',
-        voiceURI: 'com.Monica',
-        default: false,
-        localService: false,
-        name: 'Monica',
-      },
-      {
-        lang: 'en-CA',
-        voiceURI: 'com.apple.speech.synthesis.voice.Fred',
-        default: false,
-        localService: false,
-        name: 'Fred',
-      },
-    ];
-    window.speechSynthesis.getVoices = jest.fn(() => mockVoices);
-    speakJoke(mockJoke, false);
-    expect(spySpeechSynthesisSpeak).not.toBeCalled();
-  });
-
-  it('should speak using primaryVoice if available', () => {
-    const primaryVoice = {
-      lang: 'en-US',
-      voiceURI: 'com.apple.speech.synthesis.voice.Fred',
-      default: false,
-      localService: false,
-      name: 'Fred',
-    };
-    const mockVoices = [
-      {
+        voiceURI: 'com.apple.speech.synthesis.voice.Alex',
         lang: 'en-US',
-        voiceURI: 'com.Monica',
-        default: false,
-        localService: false,
-        name: 'Monica',
+        default: true,
+        localService: true,
+        name: 'Alex',
       },
-      primaryVoice,
+      {
+        voiceURI: 'com.apple.speech.synthesis.voice.Samantha',
+        lang: 'en-US',
+        default: true,
+        localService: true,
+        name: 'Samantha',
+      },
     ];
     window.speechSynthesis.getVoices = jest.fn(() => mockVoices);
-    speakJoke(mockJoke, false);
-    expect(spySpeechSynthesisSpeak).toHaveBeenCalledWith(
-      expect.objectContaining({
-        voice: primaryVoice,
-      })
+    speakJoke('test', false);
+    expect(spySpeechSynthesisSpeak).toBeCalledWith(expect.anything());
+    expect(spySpeechSynthesisSpeak.mock.calls[0][0].voice?.voiceURI).toEqual(
+      'com.apple.speech.synthesis.voice.Alex'
     );
   });
 });
