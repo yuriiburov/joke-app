@@ -6,7 +6,6 @@ const useTypingJoke = (joke: string) => {
     () => setRevealedLetters((prev) => prev + 1),
     50
   );
-  console.log(revealedLetters, joke);
 
   useEffect(() => {
     if (revealedLetters !== joke.length) return;
